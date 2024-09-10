@@ -3,7 +3,14 @@
  */
 class Store {
   constructor(initState = {}) {
-    this.state = initState;
+    const maxCode = initState.list && initState.list.length > 0
+      ? Math.max(...initState.list.map(item => item.code)) : 0;
+
+    this.state = {
+      ...initState,
+      nextCode: maxCode+1,
+      counterOfSelect: 0,
+    };
     this.listeners = []; // Слушатели изменений состояния
   }
 
@@ -33,7 +40,7 @@ class Store {
    * @param newState {Object}
    */
   setState(newState) {
-    this.state = newState;
+    this.state = { ...this.state, ...newState };
     // Вызываем всех слушателей
     for (const listener of this.listeners) listener();
   }
@@ -42,9 +49,15 @@ class Store {
    * Добавление новой записи
    */
   addItem() {
+    const newItem = {
+      code: this.state.nextCode,
+      title: `Новая запись №${this.state.nextCode}`,
+      counterOfSelect: 0,
+    };
+
     this.setState({
-      ...this.state,
-      list: [...this.state.list, { code: this.state.list.length + 1, title: 'Новая запись' }],
+      list: [...this.state.list, newItem],
+      nextCode: this.state.nextCode + 1, // Увеличиваем код
     });
   }
 
@@ -69,10 +82,23 @@ class Store {
       list: this.state.list.map(item => {
         if (item.code === code) {
           item.selected = !item.selected;
+          if (item.selected) {
+            item.counterOfSelect += 1;
+          }
+        }
+        else {
+          item.selected = false;
         }
         return item;
       }),
     });
+  }
+
+  getSelectionText() {
+    return this.state.list
+      .filter(item => item.counterOfSelect > 0)
+      .map(item => `Выделяли ${item.counterOfSelect} раз`)
+      .join('\n');
   }
 }
 
