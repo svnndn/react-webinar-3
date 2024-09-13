@@ -36,8 +36,10 @@ body {
 
 .Item {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: center;
   transition: background-color 1s;
+  cursor: pointer;
 }
 
 .Item_selected {
@@ -49,13 +51,24 @@ body {
   padding: 20px 10px 20px 20px;
 }
 
-.Item-title {
-  width: 100%;
+.Item-title .Item-selection-count {
   padding: 20px 10px;
 }
 
+.Item-title {
+  flex-grow: 0;
+}
+
+.Item-selection-count {
+  flex-shrink: 0;
+}
+
 .Item-actions {
-  display: flex;
-  justify-content: flex-end;
+  flex-shrink: 0;
   padding: 20px 20px 20px 10px;
+  margin-left: auto;
+}
+
+button {
+  cursor: pointer;
 }

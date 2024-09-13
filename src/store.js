@@ -9,7 +9,7 @@ class Store {
     this.state = {
       ...initState,
       nextCode: maxCode+1,
-      counterOfSelect: 0,
+      selectionCounts: initState.selectionCounts || {},
     };
     this.listeners = []; // Слушатели изменений состояния
   }
@@ -52,12 +52,15 @@ class Store {
     const newItem = {
       code: this.state.nextCode,
       title: `Новая запись №${this.state.nextCode}`,
-      counterOfSelect: 0,
     };
 
     this.setState({
       list: [...this.state.list, newItem],
       nextCode: this.state.nextCode + 1, // Увеличиваем код
+      selectionCounts: {
+        ...this.state.selectionCounts,
+        [newItem.code]: 0,
+      },
     });
   }
 
@@ -77,28 +80,27 @@ class Store {
    * @param code
    */
   selectItem(code) {
-    this.setState({
-      ...this.state,
-      list: this.state.list.map(item => {
-        if (item.code === code) {
-          item.selected = !item.selected;
-          if (item.selected) {
-            item.counterOfSelect += 1;
-          }
-        }
-        else {
-          item.selected = false;
-        }
-        return item;
-      }),
+    const updatedList = this.state.list.map(item => {
+      if (item.code === code) {
+        item.selected = !item.selected;
+      } else {
+        item.selected = false;
+      }
+      return item;
     });
-  }
 
-  getSelectionText() {
-    return this.state.list
-      .filter(item => item.counterOfSelect > 0)
-      .map(item => `Выделяли ${item.counterOfSelect} раз`)
-      .join('\n');
+    const updatedSelectionCounts = { ...this.state.selectionCounts };
+    updatedList.forEach(item => {
+      if (item.selected) {
+        updatedSelectionCounts[item.code] = (updatedSelectionCounts[item.code] || 0) + 1;
+      }
+    });
+
+    // Обновление состояния
+    this.setState({
+      list: updatedList,
+      selectionCounts: updatedSelectionCounts
+    });
   }
 }
 

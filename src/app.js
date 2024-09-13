@@ -1,4 +1,5 @@
 import React from 'react';
+import plural from 'plural-ru';
 import { createElement } from './utils.js';
 import './styles.css';
 
@@ -8,7 +9,7 @@ import './styles.css';
  * @returns {React.ReactElement}
  */
 function App({ store }) {
-  const list = store.getState().list;
+  const { list, selectionCounts } = store.getState();
 
   return (
     <div className="App">
@@ -28,13 +29,15 @@ function App({ store }) {
               >
                 <div className="Item-code">{item.code}</div>
                 <div className="Item-title">{item.title}</div>
-                {item.counterOfSelect > 0 && (
+                {selectionCounts[item.code] > 0 && (
                   <div className="Item-selection-count">
-                    Выделяли {item.counterOfSelect} {item.counterOfSelect === 1 ? 'раз' : 'раза'}
+                    &nbsp;| Выделяли {selectionCounts[item.code]} {plural(selectionCounts[item.code], 'раз', 'раза', 'раз')}
                   </div>
                 )}
                 <div className="Item-actions">
-                  <button onClick={() => store.deleteItem(item.code)}>Удалить</button>
+                  <button onClick={(e) => {
+                    e.stopPropagation();
+                    store.deleteItem(item.code)}}>Удалить</button>
                 </div>
               </div>
             </div>
