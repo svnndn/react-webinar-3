@@ -1,0 +1,125 @@
+.Cart {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.Cart-container {
+  background-color: #fff;
+  width: 960px;
+  height: 407px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.Cart-header {
+  background-color: #fbfbfb;
+  height: 80px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  border-bottom: 1px solid #eee;
+}
+
+.Cart-header h2 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.Cart-header button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.Cart-header button:hover {
+  background-color: #d32f2f;
+}
+
+.Cart-body {
+  padding: 15px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.Cart-body ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.Cart-body li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 2px dashed #eee;
+  font-size: 16px;
+  line-height: 18px;
+}
+
+.Main-item-info {
+  display: flex;
+  flex-direction: row;
+  margin-right: auto;
+}
+
+.Main-item-info p {
+  margin-left: 4px;
+}
+
+.Secondary-item-info {
+  display: flex;
+  flex-direction: row;
+  text-align: right;
+  margin-right: 24px;
+}
+
+.Secondary-item-info p {
+  margin-left: 62px;
+}
+
+.Cart-body li button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.Cart-body li button:hover {
+  background-color: #d32f2f;
+}
+
+.Cart-footer {
+  background-color: #fbfbfb;
+  height: 130px;
+  box-sizing: border-box;
+  padding: 20px 100px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  border-top: 1px solid #eee;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.Cart-footer h3 {
+  margin: 0 0 0 53px;
+}

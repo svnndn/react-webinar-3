@@ -1,39 +1,56 @@
-import React, { useCallback } from 'react';
-import List from './components/list';
-import Controls from './components/controls';
-import Head from './components/head';
-import PageLayout from './components/page-layout';
+import React, { useState } from 'react';
+import Item from './components/item';
+import Cart from './components/cart';
+import Head from "./components/head";
+import CartInfo from "./components/cart-info";
 
-/**
- * Приложение
- * @param store {Store} Хранилище состояния приложения
- * @returns {React.ReactElement}
- */
 function App({ store }) {
-  const list = store.getState().list;
+  const [cart, setCart] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const callbacks = {
-    onDeleteItem: useCallback(
-      code => {
-        store.deleteItem(code);
-      },
-      [store],
-    ),
-
-    onAddItem: useCallback(() => {
-      store.addItem();
-    }, [store]),
+  const handleAddToCart = (item) => {
+    setCart((prevCart) => {
+      const existingItem = prevCart.find(cartItem => cartItem.code === item.code);
+      if (existingItem) {
+        return prevCart.map(cartItem =>
+          cartItem.code === item.code ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem
+        );
+      }
+      return [...prevCart, { ...item, quantity: 1 }];
+    });
   };
 
+  const handleRemoveFromCart = (itemCode) => {
+    setCart((prevCart) => prevCart.filter(cartItem => cartItem.code !== itemCode));
+  };
+
+  const totalPrice = cart.reduce((sum, item) => sum + item.quantity * item.price, 0);
+
   return (
-    <PageLayout>
-      <Head title="Приложение на чистом JS" />
-      <Controls onAdd={callbacks.onAddItem} />
-      <List
-        list={list}
-        onDeleteItem={callbacks.onDeleteItem}
+    <div className="App">
+      <Head title="Магазин"/>
+
+      <CartInfo
+        itemCount={cart.length}
+        totalPrice={totalPrice}
+        onOpenCart={() => setIsCartOpen(true)}
       />
-    </PageLayout>
+
+      <div className="Catalog">
+        {store.state.list.map(item => (
+          <Item key={item.code} item={item} onAddToCart={handleAddToCart} />
+        ))}
+      </div>
+
+      {isCartOpen && (
+        <Cart
+          cart={cart}
+          onClose={() => setIsCartOpen(false)}
+          onRemove={handleRemoveFromCart}
+          totalPrice={totalPrice}
+        />
+      )}
+    </div>
   );
 }
 
