@@ -3,6 +3,7 @@
   justify-content: flex-start;
   transition: background-color 1s;
   border-bottom: 2px dashed #eee;
+  font-family: Arial, serif;
 }
 
 .Item_selected {

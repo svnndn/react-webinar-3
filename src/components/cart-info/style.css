@@ -5,6 +5,7 @@
   padding: 15px;
   justify-content: flex-end;
   border-bottom: 2px dashed #eee;
+  font-family: Arial, serif;
 }
 
 .Cart-info p {

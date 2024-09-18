@@ -2,23 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
 
-function Item(props) {
-
-  const callbacks = {
-    onAddToCart: e => {
-      e.stopPropagation();
-      props.onAddToCart(props.item);
-    },
+function Item({ item, onAddToCart = () => {} }) {
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    onAddToCart(item);
   };
 
   return (
-    <div className={'Item'}>
-      <div className="Item-code">{props.item.code}</div>
-      <div className="Item-title">
-        {props.item.title}{' '}
-      </div>
+    <div className="Item">
+      <div className="Item-code">{item.code}</div>
+      <div className="Item-title">{item.title}</div>
       <div className="Item-actions">
-        <button onClick={callbacks.onAddToCart}>Добавить</button>
+        <button onClick={handleAddToCart}>Добавить</button>
       </div>
     </div>
   );
@@ -26,15 +21,11 @@ function Item(props) {
 
 Item.propTypes = {
   item: PropTypes.shape({
-    code: PropTypes.number,
-    title: PropTypes.string,
-    price: PropTypes.number,
+    code: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
   }).isRequired,
   onAddToCart: PropTypes.func,
-};
-
-Item.defaultProps = {
-  onAddToCart: () => {},
 };
 
 export default React.memo(Item);
